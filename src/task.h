@@ -12,6 +12,9 @@ class task {
 public:
 	task();
 	virtual ~task();
+private:
+	int mInstructions;
+	int mData;
 };
 
 #endif /* TASK_H_ */

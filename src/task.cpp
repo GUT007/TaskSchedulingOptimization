@@ -5,11 +5,15 @@
  *      Author: mooshoo
  */
 
+#include <stdlib.h>
+#include <time.h>
 #include "task.h"
 
-task::task() {
-	// TODO Auto-generated constructor stub
 
+task::task() {
+	srand(time(NULL));
+	mInstructions = rand() % 10000000 + 100;
+	mData = rand() % 100000;
 }
 
 task::~task() {

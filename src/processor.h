@@ -12,6 +12,10 @@ class processor {
 public:
 	processor();
 	virtual ~processor();
+
+private:
+	int mProcessorSpeed;
+	int mCommSpeed;
 };
 
 #endif /* PROCESSOR_H_ */

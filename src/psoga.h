@@ -21,6 +21,12 @@ public:
 	pso_ga();
 	virtual ~pso_ga();
 	void run ();
+
+private:
+	static processor* 	mProcessor[NUM_PROCESSORS];
+	static task* 		mTask[NUM_TASKS];
+	static particle* 	mParticle[NUM_PARTICLES];
+	static particle 	mGlobalBestParticle;
 };
 
 #endif /* PSOGA_H_ */

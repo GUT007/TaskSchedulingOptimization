@@ -9,11 +9,19 @@
 
 pso_ga::pso_ga() {
 	// Instantiate m processors
+	for (int m = 0; m < NUM_PROCESSORS; m++) {
+		mProcessor[m] = new processor();
+	}
 
 	// Instantiate n tasks
+	for (int n = 0; n < NUM_TASKS; n++) {
+		mTask[n] = new task();
+	}
 
 	// Instantiate p particles
-
+	for (int p = 0; p < NUM_PARTICLES; p++) {
+		mParticle[p] = new particle();
+	}
 	// Set global particle
 
 }
