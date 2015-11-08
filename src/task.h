@@ -8,13 +8,24 @@
 #ifndef TASK_H_
 #define TASK_H_
 
+#include "psoga.h"
+
 class task {
 public:
-	task();
+	task(int id);
 	virtual ~task();
+	static void CreateTasks();
+	static class task* GetTask( int id );
+	static float GetAvgInstructions ( void ) { return sAvgInstructions;	}
+	static float GetAvgData ( void ) { return sAvgData;	}
+
 private:
-	int mInstructions;
-	int mData;
+	static class task* sTaskList[NUM_TASKS];
+	static float sAvgInstructions;
+	static float sAvgData;
+	int mID;
+	float mInstructions;
+	float mData;
 };
 
 #endif /* TASK_H_ */

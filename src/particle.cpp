@@ -5,14 +5,73 @@
  *      Author: mooshoo
  */
 
+#include <stdlib.h>
+#include <time.h>
+#include <string.h>
+#include <stdio.h>
 #include "particle.h"
+#include "processor.h"
+#include "task.h"
+
+static class particle* particle::sParticleList[NUM_PARTICLES] = {0};
+static tProcessorTaskMap particle::sGlobalBestSchedule = 0;
 
 particle::particle() {
-	// TODO Auto-generated constructor stub
+	// Generate random schedule
 
+	//Split the tasks between processors
+	int task_per_processor = NUM_TASKS/NUM_PROCESSORS;
+	int leftover_tasks = NUM_TASKS%NUM_PROCESSORS;
+
+	for (int m = 0; m < NUM_PROCESSORS; m++) {
+
+		mSchedule.processor_list[m].num_task = task_per_processor;
+		if (leftover_tasks--) mSchedule.processor_list[m].num_task++;
+	}
+
+	//Randomly assign tasks to processors
+	int task_id_list[NUM_TASKS];
+	leftover_tasks = NUM_TASKS;
+	for (int n = 0; n < NUM_TASKS; n++) task_id_list[n] = n;
+
+	for (int m = 0; m < NUM_PROCESSORS-1; m++) {
+		int num_tasks = mSchedule.processor_list[m].num_task;
+		for (int n = 0; n < num_tasks; n++) {
+			srand(time(NULL));
+			int task_id = rand() % leftover_tasks;
+			mSchedule.processor_list[m].task_id_list[n] = task_id_list[task_id];
+			for (int j = task_id; j < leftover_tasks; j++) task_id_list[j] = task_id_list[j+1];
+			leftover_tasks--;
+		}
+	}
+
+	//Assign the rest of the tasks to the last processor
+	int num_tasks = mSchedule.processor_list[NUM_PROCESSORS-1].num_task;
+	for (int n = 0; n < num_tasks; n++) {
+		mSchedule.processor_list[NUM_PROCESSORS-1].task_id_list[n] = task_id_list[n];
+	}
+
+	//Set current schedule to local best schedule
+	memcpy(&mLocalBestSchedule, &mSchedule, sizeof(tProcessorTaskMap));
 }
 
 particle::~particle() {
 	// TODO Auto-generated destructor stub
 }
 
+void particle::Update (void) {
+	MutationOperator();
+	CrossOverOperator();
+}
+
+static void particle::CreateParticles( void ) {
+	for (int p = 0; p < NUM_PARTICLES; p++) {
+		sParticleList[p] = new particle();
+	}
+}
+
+static void particle::UpdateParticles( void ) {
+	for (int p = 0; p < NUM_PARTICLES; p++) {
+		sParticleList[p]->Update();
+	}
+}

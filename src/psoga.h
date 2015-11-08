@@ -16,17 +16,22 @@
 #define NUM_PROCESSORS			10		//m
 #define NUM_TASKS				100		//n
 
+typedef struct {
+	int 		num_task;
+	float 		run_time;
+	int			task_id_list[NUM_TASKS];
+} tProcessorMap;
+
+typedef struct {
+	tProcessorMap 	processor_list[NUM_PROCESSORS];
+	float			makespan;
+} tProcessorTaskMap;
+
 class pso_ga {
 public:
 	pso_ga();
 	virtual ~pso_ga();
 	void run ();
-
-private:
-	static processor* 	mProcessor[NUM_PROCESSORS];
-	static task* 		mTask[NUM_TASKS];
-	static particle* 	mParticle[NUM_PARTICLES];
-	static particle 	mGlobalBestParticle;
 };
 
 #endif /* PSOGA_H_ */
