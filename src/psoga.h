@@ -16,6 +16,22 @@
 #define NUM_PROCESSORS			10		//m
 #define NUM_TASKS				100		//n
 
+//Randomize Processor speed between 10 to 3010 instructions per ms
+#define PROCESSOR_SPEED_RANGE_SIZE			3000
+#define PROCESSOR_SPEED_RANGE_START			10
+
+//Randomize Processor comm speed between 10 to 100000 bytes per ms
+#define COMM_SPEED_RANGE_SIZE				100000
+#define COMM_SPEED_RANGE_START 				10
+
+//Randomize Task avg instructions between 100 to 1000000000 instructions
+#define TASK_INSTRUCTION_RANGE_SIZE			1000000000
+#define TASK_INSTRUCTION_RANGE_START		100
+
+//Randomize task data between 0 to 100000 bytes
+#define TASK_DATA_RANGE_SIZE				100000
+#define TASK_DATA_RANGE_START				0
+
 typedef struct {
 	int 		num_task;
 	float 		run_time;
@@ -31,7 +47,7 @@ class pso_ga {
 public:
 	pso_ga();
 	virtual ~pso_ga();
-	void run ();
+	void run (void);
 };
 
 #endif /* PSOGA_H_ */

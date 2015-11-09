@@ -16,10 +16,12 @@ public:
 	virtual ~processor();
 
 	static void CreateProcessors();
-	static class proccessor* GetProccessor( int id );
+	static class processor* GetProccessor( int id );
 	static float GetAvgProcessorSpeed ( void ) { return sAvgProcessorSpeed;	}
 	static float GetAvgCommSpeed ( void ) { return sAvgCommSpeed;	}
 
+	float GetProcessorSpeed (void) { return mProcessorSpeed; }
+	float GetCommSpeed (void) { return mCommSpeed; }
 private:
 	static class processor* sProcessorList[NUM_PROCESSORS];
 	static float sAvgProcessorSpeed;

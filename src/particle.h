@@ -16,7 +16,8 @@ public:
 	virtual ~particle();
 
 	static void CreateParticles( void );
-	static void particle::UpdateParticles( void );
+	static void UpdateParticles( void );
+	static void SetGlobalParticle(void);
 	static tProcessorTaskMap* GetGlobalBestSchedule( void ) {
 		return &sGlobalBestSchedule;
 	}
@@ -28,6 +29,8 @@ private:
 	tProcessorTaskMap mSchedule;
 
 	void Update ( void );
+	void CalculateMakespan(void);
+	void SetLocalBestParticle(void);
 };
 
 #endif /* PARTICLE_H_ */

@@ -14,6 +14,10 @@ class task {
 public:
 	task(int id);
 	virtual ~task();
+
+	float GetTaskSize (void) { return mInstructions; }
+	float GetDataSize (void) { return mData; }
+
 	static void CreateTasks();
 	static class task* GetTask( int id );
 	static float GetAvgInstructions ( void ) { return sAvgInstructions;	}

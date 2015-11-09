@@ -6,7 +6,9 @@
  */
 
 #include "psoga.h"
-
+#include "processor.h"
+#include "particle.h"
+#include "task.h"
 
 pso_ga::pso_ga() {
 	// Instantiate m processors
@@ -17,6 +19,8 @@ pso_ga::pso_ga() {
 
 	// Instantiate p particles
 	particle::CreateParticles();
+
+	particle::SetGlobalParticle();
 }
 
 pso_ga::~pso_ga() {
@@ -25,11 +29,8 @@ pso_ga::~pso_ga() {
 
 void pso_ga::run (void) {
 	for (int i = 0; i < NUM_ITERATIONS; i++) {
-		for (int p = 0; p < NUM_PARTICLES; p++) {
-			//Update particle
-
-			//Update global particle
-		}
+		particle::UpdateParticles();
+		particle::SetGlobalParticle();
 	}
 }
 

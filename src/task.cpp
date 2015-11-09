@@ -9,19 +9,21 @@
 #include <time.h>
 #include "task.h"
 
+class task* task::sTaskList[NUM_TASKS] = {0};
+float task::sAvgInstructions = 0;
+float task::sAvgData = 0;
 
 task::task(int id) {
-	srand(time(NULL));
 	mID = id;
-	mInstructions = rand() % 10000000 + 100;
-	mData = rand() % 100000;
+	mInstructions = rand() % TASK_INSTRUCTION_RANGE_SIZE + TASK_INSTRUCTION_RANGE_START;
+	mData = rand() % TASK_DATA_RANGE_SIZE + TASK_DATA_RANGE_START;
 }
 
 task::~task() {
 	// TODO Auto-generated destructor stub
 }
 
-static void task::CreateTasks( void ) {
+void task::CreateTasks( void ) {
 	// Instantiate n tasks
 	for (int n = 0; n < NUM_TASKS; n++) {
 		sTaskList[n] = new task(n);
@@ -33,6 +35,6 @@ static void task::CreateTasks( void ) {
 	sAvgData /= NUM_TASKS;
 }
 
-static class task* task::GetTask( int id ) {
+class task* task::GetTask( int id ) {
 	return (id >= 0 && id < NUM_TASKS)? sTaskList[id] : NULL;
 }

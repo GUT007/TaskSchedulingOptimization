@@ -9,21 +9,20 @@
 #include <time.h>
 #include "processor.h"
 
-static class processor* processor::sProcessorList[NUM_PROCESSORS] = {0};
-static float processor::sAvgProcessorSpeed = 0;
-static float processor::sAvgCommSpeed = 0;
+class processor* processor::sProcessorList[NUM_PROCESSORS] = {0};
+float processor::sAvgProcessorSpeed = 0;
+float processor::sAvgCommSpeed = 0;
 
 processor::processor() {
-	srand(time(NULL));
-	mProcessorSpeed = rand() % 3000000 + 100000;
-	mCommSpeed = rand() % 100 + 1; //1 to 100 MBytes per second
+	mProcessorSpeed = rand() % PROCESSOR_SPEED_RANGE_SIZE + PROCESSOR_SPEED_RANGE_START; //10 to 3000 instructions per ms
+	mCommSpeed = rand() % COMM_SPEED_RANGE_SIZE + COMM_SPEED_RANGE_START; //1 to 100 Bytes per ms
 }
 
 processor::~processor() {
 	// TODO Auto-generated destructor stub
 }
 
-static void processor::CreateProcessors( void ) {
+void processor::CreateProcessors( void ) {
 	// Instantiate m processors
 	for (int m = 0; m < NUM_PROCESSORS; m++) {
 		sProcessorList[m] = new processor();
@@ -35,6 +34,6 @@ static void processor::CreateProcessors( void ) {
 	sAvgCommSpeed /= NUM_PROCESSORS;
 }
 
-static class proccessor* processor::GetProccessor( int id ) {
+class processor* processor::GetProccessor( int id ) {
 	return (id >= 0 && id < NUM_PROCESSORS)? sProcessorList[id] : NULL;
 }
