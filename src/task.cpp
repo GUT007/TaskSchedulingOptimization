@@ -10,13 +10,16 @@
 #include "task.h"
 
 class task* task::sTaskList[NUM_TASKS] = {0};
-float task::sAvgInstructions = 0;
-float task::sAvgData = 0;
+double task::sAvgInstructions = 0;
+double task::sAvgData = 0;
 
 task::task(int id) {
 	mID = id;
-	mInstructions = rand() % TASK_INSTRUCTION_RANGE_SIZE + TASK_INSTRUCTION_RANGE_START;
-	mData = rand() % TASK_DATA_RANGE_SIZE + TASK_DATA_RANGE_START;
+	long long rnd;
+	rnd = rand()*rand();
+	mInstructions = rnd % TASK_INSTRUCTION_RANGE_SIZE + TASK_INSTRUCTION_RANGE_START;
+	rnd = rand()*rand();
+	mData = rnd % TASK_DATA_RANGE_SIZE + TASK_DATA_RANGE_START;
 }
 
 task::~task() {
@@ -33,8 +36,28 @@ void task::CreateTasks( void ) {
 
 	sAvgInstructions /= NUM_TASKS;
 	sAvgData /= NUM_TASKS;
+
+	for (int n = 0; n < NUM_TASKS; n++) {
+		sTaskList[n]->DetermineCategory();
+	}
 }
 
 class task* task::GetTask( int id ) {
 	return (id >= 0 && id < NUM_TASKS)? sTaskList[id] : NULL;
 }
+
+void task::DetermineCategory ( void ) {
+	if (mInstructions >= sAvgInstructions && mData >= sAvgData)
+		mCategory = MORE_INSTRUCTION_MORE_DATA;
+	else if (mInstructions >= sAvgInstructions && mData < sAvgData)
+			mCategory = MORE_INSTRUCTION_LESS_DATA;
+	else if (mInstructions < sAvgInstructions && mData >= sAvgData)
+		mCategory = LESS_INSTRUCTION_MORE_DATA;
+	else
+		mCategory = LESS_INSTRUCTION_LESS_DATA;
+}
+
+
+
+
+

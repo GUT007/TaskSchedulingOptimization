@@ -8,7 +8,7 @@
 #ifndef PSOGA_H_
 #define PSOGA_H_
 
-#define INTERTIA_FACTOR			2		//omega
+#define INERTIA_FACTOR			2		//omega
 #define COGNITIVE_FACTOR		3		//lambda1
 #define SOCIAL_FACTOR			4		//lambda2
 #define	NUM_PARTICLES			10  	//p
@@ -34,13 +34,13 @@
 
 typedef struct {
 	int 		num_task;
-	float 		run_time;
+	double 		run_time;
 	int			task_id_list[NUM_TASKS];
 } tProcessorMap;
 
 typedef struct {
 	tProcessorMap 	processor_list[NUM_PROCESSORS];
-	float			makespan;
+	double			makespan;
 } tProcessorTaskMap;
 
 class pso_ga {

@@ -10,6 +10,13 @@
 #ifndef PROCESSOR_H_
 #define PROCESSOR_H_
 
+enum {
+	FASTER_PROCESSING_FASTER_COMM,
+	FASTER_PROCESSING_SLOWER_COMM,
+	SLOWER_PROCESSING_FASTER_COMM,
+	SLOWER_PROCESSING_SLOWER_COMM,
+} eProcessorCategory;
+
 class processor {
 public:
 	processor();
@@ -17,18 +24,21 @@ public:
 
 	static void CreateProcessors();
 	static class processor* GetProccessor( int id );
-	static float GetAvgProcessorSpeed ( void ) { return sAvgProcessorSpeed;	}
-	static float GetAvgCommSpeed ( void ) { return sAvgCommSpeed;	}
+	static double GetAvgProcessorSpeed ( void ) { return sAvgProcessorSpeed;	}
+	static double GetAvgCommSpeed ( void ) { return sAvgCommSpeed;	}
 
-	float GetProcessorSpeed (void) { return mProcessorSpeed; }
-	float GetCommSpeed (void) { return mCommSpeed; }
+	double GetProcessorSpeed (void) { return mProcessorSpeed; }
+	double GetCommSpeed (void) { return mCommSpeed; }
+	double GetTaskRunTime (class task* p_task);
+	void DetermineCategory( void );
+	eProcessorCategory GetCategory (void) { return mCategory; }
 private:
 	static class processor* sProcessorList[NUM_PROCESSORS];
-	static float sAvgProcessorSpeed;
-	static float sAvgCommSpeed;
-	float mProcessorSpeed;
-	float mCommSpeed;
-
+	static double sAvgProcessorSpeed;
+	static double sAvgCommSpeed;
+	double mProcessorSpeed;
+	double mCommSpeed;
+	eProcessorCategory mCategory;
 
 };
 

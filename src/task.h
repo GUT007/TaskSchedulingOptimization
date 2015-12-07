@@ -10,26 +10,37 @@
 
 #include "psoga.h"
 
+enum {
+	MORE_INSTRUCTION_MORE_DATA,
+	MORE_INSTRUCTION_LESS_DATA,
+	LESS_INSTRUCTION_MORE_DATA,
+	LESS_INSTRUCTION_LESS_DATA
+} eTaskCategory;
+
 class task {
 public:
 	task(int id);
 	virtual ~task();
 
-	float GetTaskSize (void) { return mInstructions; }
-	float GetDataSize (void) { return mData; }
+	double GetTaskSize (void) { return mInstructions; }
+	double GetDataSize (void) { return mData; }
 
 	static void CreateTasks();
 	static class task* GetTask( int id );
-	static float GetAvgInstructions ( void ) { return sAvgInstructions;	}
-	static float GetAvgData ( void ) { return sAvgData;	}
+	static double GetAvgInstructions ( void ) { return sAvgInstructions;	}
+	static double GetAvgData ( void ) { return sAvgData;	}
+	void DetermineCategory ( void );
+	eTaskCategory GetCategory ( void );
+	int BetterProcessor (int p1_id, int p2_id);
 
 private:
 	static class task* sTaskList[NUM_TASKS];
-	static float sAvgInstructions;
-	static float sAvgData;
+	static double sAvgInstructions;
+	static double sAvgData;
 	int mID;
-	float mInstructions;
-	float mData;
+	double mInstructions;
+	double mData;
+	eTaskCategory mCategory;
 };
 
 #endif /* TASK_H_ */

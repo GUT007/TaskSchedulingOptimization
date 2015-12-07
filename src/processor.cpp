@@ -8,10 +8,11 @@
 #include <stdlib.h>
 #include <time.h>
 #include "processor.h"
+#include "task.h"
 
 class processor* processor::sProcessorList[NUM_PROCESSORS] = {0};
-float processor::sAvgProcessorSpeed = 0;
-float processor::sAvgCommSpeed = 0;
+double processor::sAvgProcessorSpeed = 0;
+double processor::sAvgCommSpeed = 0;
 
 processor::processor() {
 	mProcessorSpeed = rand() % PROCESSOR_SPEED_RANGE_SIZE + PROCESSOR_SPEED_RANGE_START; //10 to 3000 instructions per ms
@@ -32,8 +33,30 @@ void processor::CreateProcessors( void ) {
 
 	sAvgProcessorSpeed /= NUM_PROCESSORS;
 	sAvgCommSpeed /= NUM_PROCESSORS;
+
+	for (int m = 0; m < NUM_PROCESSORS; m++) {
+		sProcessorList[m]->DetermineCategory();
+	}
 }
 
 class processor* processor::GetProccessor( int id ) {
 	return (id >= 0 && id < NUM_PROCESSORS)? sProcessorList[id] : NULL;
+}
+
+double processor::GetTaskRunTime (class task* p_task) {
+	double run_time;
+	run_time = (p_task->GetTaskSize()/GetProcessorSpeed()) +
+			(p_task->GetDataSize()/GetCommSpeed());
+	return run_time;
+}
+
+void processor::DetermineCategory( void ) {
+	if (mProcessorSpeed >= sAvgProcessorSpeed && mCommSpeed >= sAvgCommSpeed)
+		mCategory = FASTER_PROCESSING_FASTER_COMM;
+	else if (mProcessorSpeed >= sAvgProcessorSpeed && mCommSpeed < sAvgCommSpeed)
+		mCategory = FASTER_PROCESSING_SLOWER_COMM;
+	else if (mProcessorSpeed < sAvgProcessorSpeed && mCommSpeed >= sAvgCommSpeed)
+		mCategory = SLOWER_PROCESSING_FASTER_COMM;
+	else
+		mCategory = SLOWER_PROCESSING_SLOWER_COMM;
 }
