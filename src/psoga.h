@@ -8,13 +8,15 @@
 #ifndef PSOGA_H_
 #define PSOGA_H_
 
-#define INERTIA_FACTOR			2		//omega
-#define COGNITIVE_FACTOR		3		//lambda1
-#define SOCIAL_FACTOR			4		//lambda2
-#define	NUM_PARTICLES			10  	//p
-#define NUM_ITERATIONS			50		//i
-#define NUM_PROCESSORS			10		//m
-#define NUM_TASKS				100		//n
+#define RANDOM_SEED 			1000
+
+#define INERTIA_FACTOR			10		//omega
+#define COGNITIVE_FACTOR		5		//lambda1
+#define SOCIAL_FACTOR			5		//lambda2
+#define	NUM_PARTICLES			2	  	//p
+#define NUM_ITERATIONS			100		//i
+#define NUM_PROCESSORS			100		//m
+#define NUM_TASKS				10000	//n
 
 //Randomize Processor speed between 10 to 3010 instructions per ms
 #define PROCESSOR_SPEED_RANGE_SIZE			3000

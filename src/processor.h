@@ -10,7 +10,7 @@
 #ifndef PROCESSOR_H_
 #define PROCESSOR_H_
 
-enum {
+typedef enum eProcessorCategory{
 	FASTER_PROCESSING_FASTER_COMM,
 	FASTER_PROCESSING_SLOWER_COMM,
 	SLOWER_PROCESSING_FASTER_COMM,
@@ -31,14 +31,14 @@ public:
 	double GetCommSpeed (void) { return mCommSpeed; }
 	double GetTaskRunTime (class task* p_task);
 	void DetermineCategory( void );
-	eProcessorCategory GetCategory (void) { return mCategory; }
+	enum eProcessorCategory GetCategory (void) { return mCategory; }
 private:
 	static class processor* sProcessorList[NUM_PROCESSORS];
 	static double sAvgProcessorSpeed;
 	static double sAvgCommSpeed;
 	double mProcessorSpeed;
 	double mCommSpeed;
-	eProcessorCategory mCategory;
+	enum eProcessorCategory mCategory;
 
 };
 

@@ -6,6 +6,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <time.h>
 #include "processor.h"
 #include "task.h"
@@ -17,6 +18,7 @@ double processor::sAvgCommSpeed = 0;
 processor::processor() {
 	mProcessorSpeed = rand() % PROCESSOR_SPEED_RANGE_SIZE + PROCESSOR_SPEED_RANGE_START; //10 to 3000 instructions per ms
 	mCommSpeed = rand() % COMM_SPEED_RANGE_SIZE + COMM_SPEED_RANGE_START; //1 to 100 Bytes per ms
+	mCategory = (enum eProcessorCategory) 0;
 }
 
 processor::~processor() {
@@ -24,6 +26,8 @@ processor::~processor() {
 }
 
 void processor::CreateProcessors( void ) {
+
+
 	// Instantiate m processors
 	for (int m = 0; m < NUM_PROCESSORS; m++) {
 		sProcessorList[m] = new processor();
@@ -37,6 +41,10 @@ void processor::CreateProcessors( void ) {
 	for (int m = 0; m < NUM_PROCESSORS; m++) {
 		sProcessorList[m]->DetermineCategory();
 	}
+
+	printf("\nCreated %d processors:\n", NUM_PROCESSORS);
+	printf("   Avg Processor speed: %f instructions per ms\n", sAvgProcessorSpeed);
+	printf("   Avg Communications speed: %f bytes per ms\n", sAvgCommSpeed);
 }
 
 class processor* processor::GetProccessor( int id ) {

@@ -6,13 +6,13 @@
 // Description : Hello World in C++, Ansi-style
 //============================================================================
 
-#include <iostream>
+#include <stdio.h>
 #include "psoga.h"
 using namespace std;
 
 int main() {
+	printf("TASK SCHEDULING OPTIMIZATION USING PSO AND GA\n\n");
 	pso_ga* pso_ga_opt = new pso_ga();
 	pso_ga_opt->run();
-	cout << "!!!Hello World!!!" << endl; // prints !!!Hello World!!!
 	return 0;
 }

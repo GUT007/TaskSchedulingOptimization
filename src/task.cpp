@@ -7,6 +7,7 @@
 
 #include <stdlib.h>
 #include <time.h>
+#include <stdio.h>
 #include "task.h"
 
 class task* task::sTaskList[NUM_TASKS] = {0};
@@ -20,6 +21,7 @@ task::task(int id) {
 	mInstructions = rnd % TASK_INSTRUCTION_RANGE_SIZE + TASK_INSTRUCTION_RANGE_START;
 	rnd = rand()*rand();
 	mData = rnd % TASK_DATA_RANGE_SIZE + TASK_DATA_RANGE_START;
+	mCategory = MORE_INSTRUCTION_MORE_DATA;
 }
 
 task::~task() {
@@ -40,6 +42,10 @@ void task::CreateTasks( void ) {
 	for (int n = 0; n < NUM_TASKS; n++) {
 		sTaskList[n]->DetermineCategory();
 	}
+
+	printf("\nCreated %d tasks:\n", NUM_TASKS);
+	printf("   Avg number of instructions: %f \n", sAvgInstructions);
+	printf("   Avg Comm Data: %f bytes\n", sAvgData);
 }
 
 class task* task::GetTask( int id ) {
@@ -50,7 +56,7 @@ void task::DetermineCategory ( void ) {
 	if (mInstructions >= sAvgInstructions && mData >= sAvgData)
 		mCategory = MORE_INSTRUCTION_MORE_DATA;
 	else if (mInstructions >= sAvgInstructions && mData < sAvgData)
-			mCategory = MORE_INSTRUCTION_LESS_DATA;
+		mCategory = MORE_INSTRUCTION_LESS_DATA;
 	else if (mInstructions < sAvgInstructions && mData >= sAvgData)
 		mCategory = LESS_INSTRUCTION_MORE_DATA;
 	else

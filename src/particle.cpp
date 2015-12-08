@@ -99,10 +99,10 @@ void particle::Update (void) {
 void particle::CrossOverOperator(tProcessorTaskMap* p_sch, tProcessorTaskMap* p_best_sch) {
 	//Choose a random processor
 	int random_p_id = rand() % NUM_PROCESSORS;
-	tProcessorMap *p_map = p_sch->processor_list[random_p_id];
-	tProcessorMap *best_p_map = p_best_sch->processor_list[random_p_id];
+	tProcessorMap *p_map = &p_sch->processor_list[random_p_id];
+	tProcessorMap *best_p_map = &p_best_sch->processor_list[random_p_id];
 	processor * p_rand = processor::GetProccessor(random_p_id);
-	eProcessorCategory p_cat = p_rand->mCategory;
+	enum eProcessorCategory p_cat = p_rand->GetCategory();
 
 	//Get the processor to move from the chosen processor of best particle
 	int num_task = best_p_map->num_task;
@@ -110,19 +110,21 @@ void particle::CrossOverOperator(tProcessorTaskMap* p_sch, tProcessorTaskMap* p_
 	int task_count = 0;
 
 	for (int c = 0; c < 4; c++) {
-		eTaskCategory t_cat = sCategoryMatch[p_cat][c];
+		enum eTaskCategory t_cat = (enum eTaskCategory) sCategoryMatch[p_cat][c];
 		task_count = 0;
 		//Go through all tasks and pick out the ones with the desired category
 		for (int n = 0; n < num_task; n++) {
 			//Get task and check its category. If category matches
 			int t_id = best_p_map->task_id_list[n];
 			task* t = task::GetTask(t_id);
-			if (t->mCategory == t_cat && !IsTaskInMap(p_map, t_id)) {
+			if (t->GetCategory() == t_cat && !IsTaskInMap(p_map, t_id)) {
 				t_list[task_count++] = t_id;
 			}
 		}
 		if (task_count) break;
 	}
+
+	if (task_count == 0 ) return;
 
 	//get a random task from the shortlisted tasks
 	int index = rand() % task_count;
@@ -130,27 +132,27 @@ void particle::CrossOverOperator(tProcessorTaskMap* p_sch, tProcessorTaskMap* p_
 
 	//Look for this task in p_sch. That is, check which processor currently has the task in p_sch
 	tProcessorMap* p_src_map;
-	processor* p_dst;
 	for (int m = 0; m < NUM_PROCESSORS; m++) {
 		if (IsTaskInMap(&(p_sch->processor_list[m]), gain_t_id)) {
-			p_src_map = p_sch->processor_list[m];
+			p_src_map = &p_sch->processor_list[m];
 			break;
 		}
 	}
 
 	//Get the task to lose from p_map
 	num_task = p_map->num_task;
+	int t1_list[num_task];
 	task_count = 0;
-	for (int c = 3; c >= 0; c++) {
-		eTaskCategory t_cat = sCategoryMatch[p_cat][c];
+	for (int c = 3; c >= 0; c--) {
+		enum eTaskCategory t_cat = (enum eTaskCategory) sCategoryMatch[p_cat][c];
 		task_count = 0;
 		//Go through all tasks and pick out the ones with the desired category
 		for (int n = 0; n < num_task; n++) {
 			//Get task and check its category. If category matches
 			int t_id = p_map->task_id_list[n];
 			task* t = task::GetTask(t_id);
-			if (t->mCategory == t_cat) {
-				t_list[task_count++] = t_id;
+			if (t->GetCategory() == t_cat) {
+				t1_list[task_count++] = t_id;
 			}
 		}
 		if (task_count) break;
@@ -158,7 +160,7 @@ void particle::CrossOverOperator(tProcessorTaskMap* p_sch, tProcessorTaskMap* p_
 
 	//get a random task from the shortlisted tasks
 	index = rand() % task_count;
-	int lose_t_id = t_list[index];
+	int lose_t_id = t1_list[index];
 
 	//Now swap the tasks between the processors in p_sch
 	RemoveTaskFromMap(p_src_map, gain_t_id);
@@ -265,6 +267,8 @@ void particle::CreateParticles( void ) {
 	for (int p = 0; p < NUM_PARTICLES; p++) {
 		sParticleList[p] = new particle();
 	}
+	printf("Created %d particles:\n", NUM_PARTICLES);
+
 }
 
 void particle::UpdateParticles( void ) {

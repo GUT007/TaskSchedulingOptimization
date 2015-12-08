@@ -10,7 +10,7 @@
 
 #include "psoga.h"
 
-enum {
+typedef enum eTaskCategory{
 	MORE_INSTRUCTION_MORE_DATA,
 	MORE_INSTRUCTION_LESS_DATA,
 	LESS_INSTRUCTION_MORE_DATA,
@@ -30,7 +30,7 @@ public:
 	static double GetAvgInstructions ( void ) { return sAvgInstructions;	}
 	static double GetAvgData ( void ) { return sAvgData;	}
 	void DetermineCategory ( void );
-	eTaskCategory GetCategory ( void );
+	enum eTaskCategory GetCategory ( void ) {return mCategory;}
 	int BetterProcessor (int p1_id, int p2_id);
 
 private:
@@ -40,7 +40,7 @@ private:
 	int mID;
 	double mInstructions;
 	double mData;
-	eTaskCategory mCategory;
+	enum eTaskCategory mCategory;
 };
 
 #endif /* TASK_H_ */
